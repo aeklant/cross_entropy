@@ -8,6 +8,7 @@ setup(
 
     # TODO: fill in the required packages
     install_requires=[
+        'torch',
     ]
 
     # TODO: add entry points

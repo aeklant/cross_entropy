@@ -1,4 +1,4 @@
-from src.DenseNN import DenseNN
+from cross_entropy.DenseNN import DenseNN
 import torch # TODO: remove this once the input fixtures have been created elsewhere
 
 

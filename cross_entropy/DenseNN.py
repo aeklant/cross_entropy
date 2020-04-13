@@ -16,10 +16,7 @@ class DenseNN(nn.Module):
         nn.Module.__init__(self)
         self.wide_connection = wide_connection
         self.layer1 = nn.Linear(n_inputs, n_hidden)
-        if self.wide_connection:
-            self.layer2 = nn.Linear(n_inputs+n_hidden, n_hidden)
-        else:
-            self.layer2 = nn.Linear(n_hidden, n_hidden)
+        self.layer2 = nn.Linear(n_hidden, n_hidden)
 
     def forward(self, inputs):
         """

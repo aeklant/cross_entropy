@@ -54,20 +54,17 @@ def test_negative_creation_params(neg_model_params):
                         neg_model_params.wide_connection)
     
 
-def test_DenseNN_forward():
+@pytest.mark.DenseNN
+def test_DenseNN_forward(model_params):
     """
     tests the general structure of the output of a DenseNN object
     """
-    # TODO: put these parameters into a model fixture
-    n_inputs = 3
-    n_hidden = 10
-    wide_connection = True
-    
-    model = DenseNN(n_inputs=n_inputs, n_hidden=n_hidden, wide_connection=wide_connection)
+    model = DenseNN(model_params.n_inputs, model_params.n_hidden, 
+                    model_params.wide_connection)
 
-    # TODO: put these parameters into a DenseNN inputs fixture
-    inputs = torch.rand(10, 3)
+    n_samples = torch.randint(low=1, high=1000, size=(1,))
+    inputs = torch.rand(n_samples, model_params.n_inputs)
     with torch.no_grad():
         output = model(inputs)
 
-    assert output.shape == torch.Size([10, 10])
+    assert output.shape == torch.Size([n_samples, model_params.n_hidden])

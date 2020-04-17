@@ -13,6 +13,9 @@ class DenseNN(nn.Module):
 
 
         """
+        if n_inputs <= 0 or n_hidden <= 0:
+            raise ValueError("The number of inputs and hidden units must be greater "
+                             "than zero")
         nn.Module.__init__(self)
         self.wide_connection = wide_connection
         self.layer1 = nn.Linear(n_inputs, n_hidden)

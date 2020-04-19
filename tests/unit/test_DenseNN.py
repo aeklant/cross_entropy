@@ -7,29 +7,33 @@ import torch
 Model = namedtuple('Model', ['n_inputs', 'n_hidden', 'wide_connection'])
 
 model_params = []
+model_params_ids = []
 n_inputs = (3, 17, 42)
 n_hidden = (10, 2, 30)
 wide_connection = (True, True, False)
 for inputs in zip(n_inputs, n_hidden, wide_connection):
-    model_params.append(Model(inputs[0], inputs[1], inputs[2]))
-@pytest.fixture(params=model_params)
+    model_params.append(Model(*inputs))
+    model_params_ids.append('in={}, hidden={}, wide={}'.format(*inputs))
+@pytest.fixture(params=model_params, ids=model_params_ids)
 def model_params(request):
     return request.param
 
 neg_model_params = []
+neg_model_params_ids = []
 neg_input = (-1, 24, 0, 30, -5)
 neg_hidden = (10, -2, 42, 0, 4)
 neg_wide_conn = (True, True, False, True, False)
 for inputs in zip(neg_input, neg_hidden, neg_wide_conn):
-    neg_model_params.append(Model(inputs[0], inputs[1], inputs[2]))
-@pytest.fixture(params=neg_model_params)
+    neg_model_params.append(Model(*inputs))
+    neg_model_params_ids.append('in={}, hidden={}, wide={}'.format(*inputs))
+@pytest.fixture(params=neg_model_params, ids=neg_model_params_ids)
 def neg_model_params(request):
     return request.param
 
 
 @pytest.mark.DenseNN
 @pytest.mark.creation
-def test_DenseNN_creation(model_params):
+def test_densenn_creation(model_params):
     """
     tests the structure of the DenseNN object
     """
@@ -48,14 +52,14 @@ def test_DenseNN_creation(model_params):
 @pytest.mark.DenseNN
 @pytest.mark.creation
 @pytest.mark.negative_input
-def test_negative_creation_params(neg_model_params):
+def test_densenn_negative_creation(neg_model_params):
     with pytest.raises(ValueError):
         model = DenseNN(neg_model_params.n_inputs, neg_model_params.n_hidden,
                         neg_model_params.wide_connection)
     
 
 @pytest.mark.DenseNN
-def test_DenseNN_forward(model_params):
+def test_densenn_forward(model_params):
     """
     tests the general structure of the output of a DenseNN object
     """

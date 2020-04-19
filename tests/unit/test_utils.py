@@ -24,8 +24,22 @@ def test_step_creation(step_params):
 
 
 # Test Episode
-# creation
-# negative_input
+episode_parameters = []
+episode_parameters_ids = []
+steps = [('a','b','c'), (1,2,3), (utils.Step(0, 1), utils.Step(4, 7)), (True, 'False')]
+rewards = [1, 2, 7.5, 43.0984]
+for step, reward in zip(steps, rewards):
+    episode_parameters.append((step, reward))
+    episode_parameters_ids.append('steps={}, reward={}'.format(step, reward))
+
+@pytest.fixture(params=episode_parameters, ids=episode_parameters_ids)
+def episode_params(request):
+    return request.param
+
+def test_episode_creation(episode_params):
+    episode = utils.Episode(episode_params[0], episode_params[1])
+    assert episode.steps == episode_params[0]
+    assert episode.reward == episode_params[1]
 
 
 # Test generate_batch
